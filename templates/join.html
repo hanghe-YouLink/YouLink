@@ -1,10 +1,149 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- Font Awesome CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+
+    <title> 회원가입 페이지 (ツ)_/¯ </title>
+    <style>
+        body {
+            background-color: rgb(215, 246, 210);
+            min-height: 100vh;
+        }
+
+        .btn {
+            width: 100px;
+            position: inherit;
+            background-color: red;
+        }
+
+        .sub_log {
+            width: 350px;
+            margin: 30px auto;
+            text-align: center;
+            font-size: 32px;
+        }
+        .logo {
+            width: 350px;
+            height: 120px;
+            margin: 30px auto;
+            background-color: #D93600;
+            background-position: center;
+            text-align: center;
+
+        }
+        .title {
+            font-weight: bold;
+            font-size: 48px;
+        }
+
+        .main {
+            width: 330px;
+            margin: auto;
+        }
+
+        .sub {
+            font-size: 12px;
+        }
+
+
+    </style>
+    <script>
+
+
+        function membership() {
+            let id = $('#id').val()
+            let pw = $('#pw').val()
+            let nickN = $('#nickN').val()
+            $.ajax({
+                type: "POST",
+                url: "/api/membership",
+                data: {'id_give': id, 'pw_give': pw, 'nickname_give':nickN},
+                success: function (res) { // 성공하면
+                    alert('회원 가입 완료')
+                    window.location.href='/';
+                }
+            })
+        }
+
+    </script>
 </head>
 <body>
- <h1>회원가입 페이지입니다.</h1>
+<button class="btn" onclick="window.location.href='/'">로그인페이지</button>
+
+
+<section class="hero is-danger logo">
+    <div class="hero-body">
+        <p class="title">
+            YOU LINK
+        </p>
+    </div>
+</section>
+
+
+<h1 class="sub_log">회원가입</h1>
+
+<section class="main">
+    <div class="field has-addons">
+        <div class="control has-icons-left">
+            <input class="input" type="email" id="id" placeholder="아이디를 입력해 주세요">
+            <span class="icon is-small is-left"> <i class="fa fa-user"></i> </span>
+        </div>
+
+        <div class="control">
+            <button class="button is-sparta" onclick="">중복확인</button>
+        </div>
+    </div>
+    <p class="sub">아이디는 2-10자의 영문과 숫자만 입력 가능합니다.</p>
+    <p class="is-danger"></p>
+
+
+    <div class="field pw">
+        <div class="control has-icons-left">
+            <input class="input" type="password" id="pw" placeholder="비밀번호를 입력해 주세요">
+            <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+        </div>
+        <p  class="sub">영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요. 특수문자(!@#$%^&*)도
+            사용 가능합니다.</p>
+    </div>
+
+    <div class="field pw">
+        <div class="control has-icons-left">
+            <input class="input" type="password" placeholder="비밀번호를 재입력해 주세요">
+            <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+        </div>
+    </div>
+
+    <div class="field has-addons">
+        <div class="control has-icons-left">
+            <input class="input" type="email" id="nickN" placeholder="닉네임을 입력해 주세요">
+            <span class="icon is-small is-left"> <i class="fa fa-user"></i> </span>
+        </div>
+
+        <div class="control">
+            <button class="button is-sparta" onclick="">중복확인</button>
+        </div>
+    </div>
+    <p class="sub">닉네임은 2-10자의 영문과 숫자만 입력 가능합니다.</p>
+    <p class="is-danger"></p>
+
+    <div class="buttons">
+        <button class="button is-warning" onclick="membership()">회원가입</button>
+        <button class="button is-warning" onclick="window.location.href='/'">취소</button>
+    </div>
+</section>
+
 </body>
 </html>
