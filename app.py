@@ -63,5 +63,12 @@ def posting():
     return jsonify({'msg': '작성 완료!'})
 
 
+# @app.route('/')
+# def showArticles():
+#     articles = requests.get('특정 페이지의 div같은 태그명 또는 bs4로 긁어오기, 그중 상위 몇개만])
+#     모두 다 들고오면 로딩 시 페이지 느릴 수 있음
+#     return render_template('index.html', articles = articles)
+
+
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
