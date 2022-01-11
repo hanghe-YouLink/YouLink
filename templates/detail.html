@@ -1,10 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+
+    <title>글쓰기</title>
+
+    <style>
+        @font-face {
+            font-family: 'SLEIGothicTTF';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/SLEIGothicTTF.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            font-family: 'SLEIGothicTTF';
+        }
+
+        .top_box {
+        }
+
+        #box {
+            margin-top: 20px;
+            width: 300px;
+            height: 50px;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn_box {
+            float: right;
+            display: flex;
+            margin: 30px;
+        }
+
+        .content_box {
+            height: 500px;
+            width: 1200px;
+            margin: auto;
+        }
+
+        #post-box {
+            width: 500px;
+            margin: 20px auto;
+            padding: 50px;
+            border: black solid;
+            border-radius: 5px;
+        }
+
+        .user_id {
+            margin: 10px;
+        }
+
+        .btn-top {
+            margin: 5px;
+        }
+
+        .btns {
+            text-align: center;
+            margin: auto;
+            display: flex;
+            width: 200px;
+        }
+    </style>
+    <script>
+        function postArticle() {
+            let title = $('#post-title').val()
+            let url = $('#post-url').val()
+            let comment = $('#post-comment').val()
+
+            $.ajax({
+                type: "POST",
+                url: "/api",
+                data: {
+                    title_give: title,
+                    url_give: url,
+                    comment_give: comment
+                },
+                success: function (response) { // 성공하면
+                    alert(response["msg"]);
+                    window.location.reload()
+                }
+            })
+        }
+    </script>
 </head>
 <body>
-
+<div class="wrap">
+    <div class="top_box">
+        <div id="box">
+            <p class="title is-1 level-item has-text-centered">YOULINK :)</p>
+        </div>
+        <div class="btn_box">
+            <span class="user_id">{{ users }} 님</span>
+            <button class="button is-warning is-fullwidth btn-top" onclick="">로그아웃</button>
+            <button class="button is-warning is-fullwidth btn-top" onclick="">글쓰기</button>
+        </div>
+    </div>
+    <hr>
+    <div class="content">
+        <h1>글 등록하기</h1>
+        <div class="content_box">
+            <div id="post-box" class="form-post">
+                <div>
+                    <div class="form-group">
+                        <label for="post-url">제목</label>
+                        <input id="post-title" class="form-control" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="post-url">채널 URL</label>
+                        <input id="post-url" class="form-control" placeholder="유튜브 채널 URL">
+                    </div>
+                    <div class="form-group">
+                        <label for="post-comment">간단 코멘트</label>
+                        <textarea id="post-comment" class="form-control" rows="2"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="btns">
+                <button class="button is-warning is-fullwidth btn-top" onclick="">목록</button>
+                <button class="button is-warning is-fullwidth btn-top" onclick="postArticle()">등록하기</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -1,6 +1,13 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify, request
 
 app = Flask(__name__)
+
+import requests
+from bs4 import BeautifulSoup
+
+from pymongo import MongoClient
+client = MongoClient('localhost', 27017)
+db = client.dbsparta
 
 @app.route('/')
 def main():
@@ -19,15 +26,41 @@ def detail():
     return render_template("detail.html")
 
 
-
-
-# 중복 확인 api
+# ID 중복 확인 api
 @app.route('/api/membership', methods=['POST'])
 def api_membership():
 
     userid_receive = request.form['userid_give']
     exists = bool(db.dbdbdb.find_one({'userID': userid_receive}))
     return jsonify({'result': 'sucess', 'exists': exists})
+
+
+# 글 작성하기
+@app.route('/api/posting', methods=['POST'])
+def posting():
+    title_receive = request.form['title_give']
+    url_receive = request.form['url_give']
+    comment_receive = request.form['comment_give']
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+    data = requests.get(url_receive, headers=headers)
+    soup = BeautifulSoup(data.text, 'html.parser')
+
+    ogTitle = soup.select_one('meta[property="og:title"]')['content']
+    ogImage = soup.select_one('meta[property="og:image"]')['content']
+    ogUrl = soup.select_one('meta[property="og:url"]')['content']
+
+    doc = {
+        'title': title_receive,
+        'channel_title': ogTitle,
+        'url': ogUrl,
+        'image': ogImage,
+        'comment': comment_receive
+    }
+
+    db.youlink.insert_one(doc)
+    return jsonify({'msg': '작성 완료!'})
 
 
 if __name__ == '__main__':
