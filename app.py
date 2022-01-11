@@ -1,7 +1,7 @@
 from flask import Flask, render_template, jsonify, request
 
 app = Flask(__name__)
-
+import hashlib
 import requests
 from bs4 import BeautifulSoup
 
@@ -33,11 +33,34 @@ def detail():
 # ID 중복 확인 api
 @app.route('/api/membership', methods=['POST'])
 def api_membership():
+    user_id_receive = request.form['user_id_give']
+    exists = bool(db.youlink.find_one({'user_ID': user_id_receive}))
+    return jsonify({'result': 'success', 'exists': exists})
 
-    userid_receive = request.form['userid_give']
-    exists = bool(db.dbdbdb.find_one({'userID': userid_receive}))
-    return jsonify({'result': 'sucess', 'exists': exists})
 
+# NICK_NAME 중복 확인 api
+@app.route('/api/membership2', methods=['POST'])
+def api_membership2():
+    user_nick_receive = request.form['user_nick_give']
+    exists2 = bool(db.youlink.find_one({'user_NICK': user_nick_receive}))
+    return jsonify({'result': 'success', 'exists': exists2})
+
+
+# 회원가입 api
+@app.route('/api/sign_up', methods=['POST'])
+def sign_up():
+    user_id_receive = request.form['user_id_give']
+    user_pw_receive = request.form['user_pw_give']
+    password_hash = hashlib.sha256(user_pw_receive.encode('utf-8')).hexdigest()
+    user_nick_receive = request.form['user_nick_give']
+
+    doc = {
+        'user_ID': user_id_receive,
+        'user_PW': password_hash,
+        'user_NICK': user_nick_receive
+    }
+    db.youlink.insert_one(doc)
+    return jsonify({'result': 'success'})
 
 # 글 작성하기
 @app.route('/api/posting', methods=['POST'])
