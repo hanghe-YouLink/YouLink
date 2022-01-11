@@ -9,18 +9,22 @@ from pymongo import MongoClient
 client = MongoClient('localhost', 27017)
 db = client.dbsparta
 
+# 메인페이지
 @app.route('/')
 def main():
     return render_template("index.html")
 
+# 로그인페이지
 @app.route('/login')
 def login():
     return render_template("login.html")
 
+# 회원가입페이지
 @app.route('/join')
 def join():
     return render_template("join.html")
 
+# 글작성페이지
 @app.route('/detail')
 def detail():
     return render_template("detail.html")
