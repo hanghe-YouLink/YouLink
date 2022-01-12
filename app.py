@@ -45,6 +45,18 @@ def detail():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
+# 메인페이지 닉네임
+@app.route('/')
+def main_nickname():
+    # 메인 페이지에 사용자 닉네임을 띄워주는 api
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"user_ID": payload['user_ID']})
+        return render_template('index.html', nickname=user_info["user_NICK"])
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
 
 # ID 중복 확인 api
 @app.route('/api/membership', methods=['POST'])
@@ -141,12 +153,12 @@ def posting():
         return redirect(url_for('/'))
 
 
-# @app.route('/')
-# def showArticles():
-#     articles = requests.get('특정 페이지의 div같은 태그명 또는 bs4로 긁어오기, 그중 상위 몇개만])
-#     모두 다 들고오면 로딩 시 페이지 느릴 수 있음
-#     return render_template('index.html', articles = articles)
+# 등록된 글 보내기
+@app.route('/api/sending', methods=['GET'])
+def mainPosting():
+    postings = list(db.posts.find({}, {'_id': False}))
+    return jsonify({'all_postings': postings})
 
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, debug=True)
+    app.run('0.0.0.0', port=5001, debug=True)
