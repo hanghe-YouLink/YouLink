@@ -76,8 +76,8 @@
                 type: "POST",
                 url: "/api/login",
                 data: {
-                    id_give: $('#user-id').val(),
-                    pw_give: $('#user-pw').val()
+                    id_give: user_id,
+                    pw_give: user_pw
                 },
                 success: function (response) {
                     if (response['result'] == 'success') {

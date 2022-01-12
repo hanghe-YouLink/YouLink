@@ -40,7 +40,6 @@ def detail():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        print(payload)
         user_info = db.users.find_one({"user_ID": payload['user_ID']})
         return render_template('detail.html', nickname=user_info["user_NICK"])
     except jwt.exceptions.DecodeError:

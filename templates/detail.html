@@ -66,19 +66,23 @@
             let url = $('#post-url').val()
             let comment = $('#post-comment').val()
 
-            $.ajax({
-                type: "POST",
-                url: "/api/posting",
-                data: {
-                    title_give: title,
-                    url_give: url,
-                    comment_give: comment
-                },
-                success: function (response) { // 성공하면
-                    alert(response["msg"]);
-                    window.location.reload()
-                }
-            })
+            if (title == '' && url == '' && comment == '') {
+                alert('칸을 비우지 말고 입력해 주세요!')
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/posting",
+                    data: {
+                        title_give: title,
+                        url_give: url,
+                        comment_give: comment
+                    },
+                    success: function (response) { // 성공하면
+                        alert(response["msg"]);
+                        window.location.reload()
+                    }
+                })
+            }
         }
 
         // 로그아웃 버튼에 들어가는 함수 (토큰을 삭제시킨다.)
@@ -130,7 +134,7 @@
         <div class="field">
             <label class="label">채널 URL</label>
             <div class="control">
-                <input class="input" type="password" id="post-url" placeholder="" value="">
+                <input class="input" id="post-url" placeholder="" value="">
             </div>
         </div>
         <!--간단 채널 소개 입력-->
