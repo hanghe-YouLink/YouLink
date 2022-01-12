@@ -67,6 +67,12 @@
             /* 쇼핑몰 상세페이지 처럼 글의 일부만 보이는 css, 그라데이션 효과 삽입*/
         }
 
+        .card-radius {
+
+            border-radius: 1rem;
+
+        }
+
     </style>
 
     <script>
@@ -105,7 +111,7 @@
                         let image = postings[i]['image']
                         let comment = postings[i]['comment']
 
-                        let temp_html = `<di class="card posting-size">
+                        let temp_html = `<di class="card posting-size card-header card-header-shadow card-background-color card-radius">
         <div class="card-image">
             <figure class="image is-4by3">
                 <img src="${image}"
