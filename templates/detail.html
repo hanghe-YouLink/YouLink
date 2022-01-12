@@ -15,6 +15,7 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
@@ -22,9 +23,7 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
-
     <title>글쓰기</title>
-
     <style>
         @font-face {
             font-family: 'SLEIGothicTTF';
@@ -37,112 +36,132 @@
             font-family: 'SLEIGothicTTF';
         }
 
-        .top_box {
-        }
-
-        #box {
-            margin-top: 20px;
-            width: 300px;
-            height: 50px;
-            text-align: center;
-            display: inline-block;
-        }
-
-        .btn_box {
-            float: right;
-            display: flex;
-            margin: 30px;
-        }
-
-        .content_box {
-            height: 500px;
-            width: 1200px;
+        .navi {
+            width: 1000px;
             margin: auto;
         }
 
-        #post-box {
-            width: 500px;
+        .button {
+            font-family: 'SLEIGothicTTF';
+        }
+
+        .box {
             margin: 20px auto;
-            padding: 50px;
-            border: black solid;
-            border-radius: 5px;
+            width: 800px;
         }
 
         .user_id {
-            margin: 10px;
+            margin-bottom: 10px;
         }
 
-        .btn-top {
-            margin: 5px;
+        a:hover {
+            text-decoration: none;
         }
 
-        .btns {
-            text-align: center;
-            margin: auto;
-            display: flex;
-            width: 200px;
-        }
     </style>
     <script>
+        // 등록하기 버튼에 들어가는 함수
         function postArticle() {
             let title = $('#post-title').val()
             let url = $('#post-url').val()
             let comment = $('#post-comment').val()
 
-            $.ajax({
-                type: "POST",
-                url: "/api",
-                data: {
-                    title_give: title,
-                    url_give: url,
-                    comment_give: comment
-                },
-                success: function (response) { // 성공하면
-                    alert(response["msg"]);
-                    window.location.reload()
-                }
-            })
+            if (title == '' && url == '' && comment == '') {
+                alert('칸을 비우지 말고 입력해 주세요!')
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/posting",
+                    data: {
+                        title_give: title,
+                        url_give: url,
+                        comment_give: comment
+                    },
+                    success: function (response) { // 성공하면
+                        alert(response["msg"]);
+                        window.location.reload()
+                    }
+                })
+            }
+        }
+
+        // 로그아웃 버튼에 들어가는 함수 (토큰을 삭제시킨다.)
+        function sign_out() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+            window.location.href = "/login"
+        }
+
+        // 메인페이지로 이동 시키는 함수
+        function main_page() {
+            window.location.href = '/'
         }
     </script>
+
 </head>
 <body>
-<div class="wrap">
-    <div class="top_box">
-        <div id="box">
-            <p class="title is-1 level-item has-text-centered">YOULINK :)</p>
+<!--내비바-->
+<div class="navi">
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/" width="250" height="100">
+                <p class="title is-1 level-item has-text-centered">YOULINK :)</p>
+            </a>
         </div>
-        <div class="btn_box">
-            <span class="user_id">{{ users }} 님</span>
-            <button class="button is-warning is-fullwidth btn-top" onclick="">로그아웃</button>
-            <button class="button is-warning is-fullwidth btn-top" onclick="">글쓰기</button>
-        </div>
-    </div>
-    <hr>
-    <div class="content">
-        <h1>글 등록하기</h1>
-        <div class="content_box">
-            <div id="post-box" class="form-post">
-                <div>
-                    <div class="form-group">
-                        <label for="post-url">제목</label>
-                        <input id="post-title" class="form-control" placeholder="">
-                    </div>
-                    <div class="form-group">
-                        <label for="post-url">채널 URL</label>
-                        <input id="post-url" class="form-control" placeholder="유튜브 채널 URL">
-                    </div>
-                    <div class="form-group">
-                        <label for="post-comment">간단 코멘트</label>
-                        <textarea id="post-comment" class="form-control" rows="2"></textarea>
-                    </div>
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <span class="user_id">{{ nickname }} 님</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a class="button is-primary" onclick="sign_out()">
+                        <strong>로그아웃</strong>
+                    </a>
                 </div>
             </div>
-            <div class="btns">
-                <button class="button is-warning is-fullwidth btn-top" onclick="">목록</button>
-                <button class="button is-warning is-fullwidth btn-top" onclick="postArticle()">등록하기</button>
+        </div>
+    </nav>
+</div>
+<hr>
+<form class="box">
+    <!--제목 입력-->
+    <div class="field">
+        <label class="label">제목</label>
+        <div class="field has-addons">
+            <div class="control is-expanded">
+                <input class="input" type="text" id="post-title" placeholder="">
+            </div>
+        </div>
+        <!--채널 URL 입력-->
+        <div class="field">
+            <label class="label">채널 URL</label>
+            <div class="control">
+                <input class="input" id="post-url" placeholder="" value="">
+            </div>
+        </div>
+        <!--간단 채널 소개 입력-->
+        <div class="field">
+            <label class="label">간단 채널 소개</label>
+            <div class="field has-addons">
+                <div class="control is-expanded">
+                    <textarea class="textarea" id="post-comment" placeholder="ex) 멋진 채널 😆"></textarea>
+                </div>
             </div>
         </div>
     </div>
+</form>
+
+<!-- 버튼 영역 -->
+<div class="field is-grouped is-grouped-centered">
+    <p class="control">
+        <a class="button is-primary" onclick="postArticle()">
+            등록하기
+        </a>
+    </p>
+    <p class="control">
+        <a class="button is-light" onclick="main_page()">
+            목록
+        </a>
+    </p>
 </div>
+
 </body>
 </html>
