@@ -1,22 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="UTF-8">
-    <!-- 반응형 웹 디자인을 위한 viewport, 모바일에서도 화면이 깨지지 않도록 하기 위함-->
+ <!-- Required meta tags -->
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!-- Bulma CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
-    <!-- integrity, crossrigin 보안을 위한 것, 없어도 작동한다 -->
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
@@ -35,10 +34,6 @@
 
         .input_text {
 
-        }
-
-        .showArticles {
-            /* 쇼핑몰 상세페이지 처럼 글의 일부만 보이는 css, 그라데이션 효과 삽입*/
         }
 
         .search-btn {
@@ -62,9 +57,20 @@
             float: right;
         }
 
+        .posting-size {
+            width: 500px;
+            margin: 10px 10px 10px 10px;
+            float: left;
+        }
+
+        .postingArticles {
+            /* 쇼핑몰 상세페이지 처럼 글의 일부만 보이는 css, 그라데이션 효과 삽입*/
+        }
+
     </style>
 
     <script>
+        // 검사용 함수
         function findingResult() {
 
             location.href = "게시글 페이지"
@@ -75,38 +81,137 @@
 
         }
 
+        $(document).ready(function () {
+            postingArticles()
+            login_status()
+        });
 
-        // function posting () {
-        //if (로그인 했을 시) {
+        function postingArticles() {
 
-        //  location.href = "/posting"
+            $('#post-box').empty()
 
-        //} else {
-        //  alert('로그인 후 이용해주시기 바랍니다.')
-        // 로그인 페이지로 리디렉션
-        //    location.href = "/login"
-        //  }
-        //}
+            $.ajax({
+                type: "GET",
+                url: '/api/sending',
+                data: {},
+                success: function (response) {
+
+                    let postings = response['all_postings']
+
+                    for (let i = 0; i < postings.length; i++) {
+                        let title = postings[i]['title']
+                        let channel_title = postings[i]['channel_title']
+                        let url = postings[i]['url']
+                        let image = postings[i]['image']
+                        let comment = postings[i]['comment']
+
+                        let temp_html = `<di class="card posting-size">
+        <div class="card-image">
+            <figure class="image is-4by3">
+                <img src="${image}"
+                     alt="Placeholder image">
+            </figure>
+        </div>
+        <div class="card-content">
+            <div class="media">
+                <div class="media-left">
+                </div>
+                <div class="media-content">
+                    <a href="${url}" class="title is-4">${title}</a>
+                </div>
+            </div>
+
+            <div class="content">
+                ${comment}
+                <br>
+            </div>
+        </div>
+    </di>`
+                        $('#post-box').append(temp_html);
+                    }
+                }
+            })
+        }
+
+        // 로그인 상태 확인 함수, 로그인 상태에 따라 로그인/로그아웃 버튼을 나눈다.
+        function login_status() {
+
+            if (document.cookie.split("=").includes('mytoken')) {
+                let logout_btn = `<strong>로그아웃</strong>`
+                $('#login_btn').append(logout_btn)
+            } else {
+                let login_btn = `<strong>로그인</strong>`
+                $('#login_btn').append(login_btn)
+            }
+
+            // let cookie = (document.cookie.split("=")[1]) // 브라우저 내 token 값 추출, 혹은 $.cookie('mytoken')으로도 확인가능
+        }
+
+        //로그인 상태, 버튼은 로그아웃 표출 시 -> 로그아웃 됨, 로그아웃 상태, 버튼은 로그인 표출 시 -> 로그인 됨
+        function login_out() {
+
+            console.log(document.cookie.split("=").includes('mytoken'))
+
+            if (!document.cookie.split("=").includes('mytoken')) {
+                location.href = '/login'
+            } else {
+                $.removeCookie('mytoken', {path: '/'});
+                alert('로그아웃!')
+                window.location.href = '/'
+                // 내가 가지고 있는 로그인 토큰만 쿠키에서 없애기
+            }
+        }
+
+        function newPosting() {
+
+            if (document.cookie.split("=").includes('mytoken')) {
+                location.href = "/detail"
+            } else {
+                alert("로그인이 필요합니다.")
+                location.href = "/login"
+            }
+        }
 
     </script>
 
 </head>
 <body>
 
-<!--홈으로 이동 로고-->
-<a href="/"><img src="" alt="YouLink">홈으로 이동 로고</a>
+<!-- 네비게이션 바, 홈로고, 닉네임 표시, 로그인, 글쓰기 버튼 -->
 
-<!--사용자 표시-->
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <!--홈으로 이동 로고-->
+        <a class="navbar-item" href="/">
+            <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" alt="YouLink">
+        </a>
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
 
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-end">
+            <div class="navbar-item">
+                {{ nickname }}님
+                <div class="buttons">
 
-<!--로그인/로그아웃 4주차 강의 참고-->
-<div class="btn">
-    <button class="button is-success">Login</button>
-</div>
-<!--글쓰기 버튼-->
-<div class="btn">
-    <button class="button is-success" onclick="posting()">글쓰기</button>
-</div>
+                    <a class="button is-primary" id="login_btn" onclick="login_out()">
+                        <!-- 로그인/로그아웃 텍스트 들어갈 자리 -->
+                    </a>
+
+                    <!--글쓰기 버튼-->
+                    <a class="button is-light" onclick="newPosting()">
+                        <strong>글쓰기</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
 <!--검색 창과 검색 버튼-->
 <div class="columns is-vcentered search_bar">
     <input id=searching_word class="input column is-success is-one-third" type="text" placeholder="검색어를 입력해 주세요."
@@ -118,15 +223,12 @@
 <img src="data:image/png;base64,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"
      alt="My Image" class="main_img">
 
-<!--사용자 등록글 일부 노출-->
 
-<div class='showArticles'>
-
-    <!-- 글 목록 넣는 부분 -->
-    {{ articles }}
+<!-- 글 목록 넣는 부분, 아직 접기 기능 및 그라데이션은 미적용,모바일 환경 UI (네비게이션 바, 검색, 이미지 크기 반응형 필요)
+Css 전반적으로 모두 손보기-->
+<div class='postingArticles' id="post-box">
 
 
 </div>
-
 </body>
 </html>
