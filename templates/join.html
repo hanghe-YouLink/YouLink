@@ -105,7 +105,7 @@
                 success: function (response) {
                     console.log(response)
                     alert('가입 축하드립니다.')
-                    window.location.href = '/login'
+                    location.href = '/login'
                 }
             })
 
@@ -251,7 +251,7 @@
                 <button class="button is-link" onclick="sign_up()">회원가입</button>
             </div>
             <div class="control">
-                <button class="button is-link is-light" onclick="window.location.href='/'">Cancel</button>
+                <a class="button is-link is-light" onclick="window.location.href='/login'">Cancel</a>
             </div>
         </div>
     </form>
