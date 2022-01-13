@@ -8,6 +8,8 @@
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 
+    <link rel="icon" href="{{ url_for('static', filename='logo.png') }}" type="image/png">
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -270,7 +272,7 @@
     <div class="block main">
         <div class="columns">
             <div class="column is-two-thirds main-title">
-                <h1 class="title">안녕하세요, {{ nickname }}님! 유링크입니다!</h1> <!--메인 페이지 내 닉네임 표시하여 환영-->
+                <h1 class="title" style="color: white">안녕하세요, {{ nickname }}님! 유링크입니다!</h1> <!--메인 페이지 내 닉네임 표시하여 환영-->
                 <br>
                 <h2 class="subtitle" style="font-size: 18px">
                     내가 직접 만들어가는 유튜브링크 사이트!<br>

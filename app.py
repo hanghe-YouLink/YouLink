@@ -1,14 +1,9 @@
-
-import jwt
-import hashlib
 from flask import Flask, render_template, jsonify, request, redirect, url_for
+import jwt, hashlib, requests
+from bs4 import BeautifulSoup
+from pymongo import MongoClient
 
 app = Flask(__name__)
-
-import requests
-from bs4 import BeautifulSoup
-
-from pymongo import MongoClient
 
 client = MongoClient('mongodb://3.35.21.27/', 27017, username="test", password='test')
 # client = MongoClient('localhost', 27017)
