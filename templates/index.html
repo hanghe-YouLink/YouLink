@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
- <!-- Required meta tags -->
+    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -22,10 +22,55 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
-
+    <!-- 폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
     <title>YouLink 메인 페이지</title>
-
     <style>
+
+        @font-face {
+            font-family: 'SLEIGothicTTF';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/SLEIGothicTTF.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            font-family: 'SLEIGothicTTF';
+        }
+
+        .navi {
+            width: 1000px;
+            margin: auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-gap: 20px;
+            align-items: stretch;
+        }
+
+        .grid > article {
+            border: 1px solid #ccc;
+            box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
+        }
+
+        .grid > article img {
+            max-width: 100%;
+        }
+
+        .text {
+            padding: 0 20px 20px;
+        }
+
+        .text > button {
+            background: gray;
+            border: 0;
+            color: white;
+            padding: 10px;
+            width: 100%;
+        }
+
         .mainLogo {
             width: 300px;
             height: 50px;
@@ -40,6 +85,11 @@
             margin: 10px 10px 10px 10px;
         }
 
+        .search_bar {
+            margin: 20px 10px 20px 40px;
+            height: 60px;
+        }
+
         .main_img {
             display: block;
             margin: auto;
@@ -49,28 +99,41 @@
             object-fit: cover;
         }
 
-        .search_bar {
-            margin: 20px 20px 20px 20px;
-        }
-
         .btn {
             float: right;
         }
 
-        .posting-size {
-            width: 500px;
-            margin: 10px 10px 10px 10px;
-            float: left;
-        }
-
-        .postingArticles {
-            /* 쇼핑몰 상세페이지 처럼 글의 일부만 보이는 css, 그라데이션 효과 삽입*/
-        }
-
-        .card-radius {
-
+        .posting-card {
+            width: 350px;
+            height: 600px;
             border-radius: 1rem;
+        }
 
+        .post-box {
+            /* 쇼핑몰 상세페이지 처럼 글의 일부만 보이는 css, 그라데이션 효과 삽입*/
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-gap: 20px;
+            margin: auto;
+            align-items: start;
+        }
+
+        .main_banner {
+            background: rgb(34, 193, 195);
+            background: linear-gradient(0deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+        }
+
+        {#코멘트 글자 수가 너무 많아도 밖으로 튀어나오지 않음#}
+        .comment_limit {
+            width: 300px;
+            height: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .user_id {
+            margin-bottom: 10px;
         }
 
     </style>
@@ -111,7 +174,7 @@
                         let image = postings[i]['image']
                         let comment = postings[i]['comment']
 
-                        let temp_html = `<di class="card posting-size card-header card-header-shadow card-background-color card-radius">
+                        let temp_html = `<div class="card posting-card">
         <div class="card-image">
             <figure class="image is-4by3">
                 <img src="${image}"
@@ -127,12 +190,12 @@
                 </div>
             </div>
 
-            <div class="content">
+            <div class="content comment_limit">
                 ${comment}
                 <br>
             </div>
         </div>
-    </di>`
+    </div>`
                         $('#post-box').append(temp_html);
                     }
                 }
@@ -184,30 +247,21 @@
 <body>
 
 <!-- 네비게이션 바, 홈로고, 닉네임 표시, 로그인, 글쓰기 버튼 -->
-
+<div class="navi">
 <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <!--홈으로 이동 로고-->
-        <a class="navbar-item" href="/">
-            <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" alt="YouLink">
-        </a>
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
+        <a class="navbar-item" href="/" width="250" height="100">
+            <p class="title is-1 level-item has-text-centered">YOULINK :)</p>
         </a>
     </div>
-
-    <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-end">
             <div class="navbar-item">
-                {{ nickname }}님
                 <div class="buttons">
-
+                    <span class="user_id">{{ nickname }} 님</span> &nbsp;&nbsp;&nbsp;
                     <a class="button is-primary" id="login_btn" onclick="login_out()">
                         <!-- 로그인/로그아웃 텍스트 들어갈 자리 -->
                     </a>
-
                     <!--글쓰기 버튼-->
                     <a class="button is-light" onclick="newPosting()">
                         <strong>글쓰기</strong>
@@ -215,25 +269,27 @@
                 </div>
             </div>
         </div>
-    </div>
 </nav>
+</div>
+<hr>
 
 <!--검색 창과 검색 버튼-->
-<div class="columns is-vcentered search_bar">
-    <input id=searching_word class="input column is-success is-one-third" type="text" placeholder="검색어를 입력해 주세요."
+<div class="columns is-vcentered">
+    <input id=searching_word class="input column is-success is-one-third search_bar" type="text"
+           placeholder="검색어를 입력해 주세요."
            maxlength="255">
-    <button class="button is-primary search-btn" onclick="findingResult()">검색</button>
+    <button class="button is-primary search-btn is-large is" onclick="findingResult()">검색</button>
 </div>
 
-<!--메인 페이지 이미지-->
-<img src="data:image/png;base64,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"
-     alt="My Image" class="main_img">
-
+<div class="main_banner">
+    <!--메인 페이지 이미지-->
+    <img src="data:image/png;base64,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"
+         alt="My Image" class="main_img">
+</div>
 
 <!-- 글 목록 넣는 부분, 아직 접기 기능 및 그라데이션은 미적용,모바일 환경 UI (네비게이션 바, 검색, 이미지 크기 반응형 필요)
 Css 전반적으로 모두 손보기-->
-<div class='postingArticles' id="post-box">
-
+<div class='post-box' id="post-box">
 
 </div>
 </body>
