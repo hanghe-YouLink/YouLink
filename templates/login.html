@@ -9,6 +9,8 @@
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 
+    <link rel="icon" href="{{ url_for('static', filename='logo.png') }}" type="image/png">
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -57,6 +59,7 @@
         }
     </style>
     <script>
+        //로그인 버튼 클릭시 실행
         function sign_in() {
             let user_id = $('#input-user-id').val();
             let user_pw = $('#input-user-pw').val();
