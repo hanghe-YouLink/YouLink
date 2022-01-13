@@ -278,16 +278,7 @@
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">
-                    <!--로그인 여부에 따라 화면이 달라짐-->
-                        {% if msg == '' %}
-                            <p>{{ nickname }}님&nbsp;&nbsp;</p>
-                        {% elif msg == '로그인' %}
-                            <p>
-                                <a href="/login">
-                                    <button>{{ msg }}</button>
-                                </a>
-                            </p>
-                        {% endif %}
+                    <span class="user_id">{{ nickname }} 님</span> &nbsp;&nbsp;&nbsp;
                     <a class="button is-dark" id="login_btn" onclick="login_out()" style="color: white"></a>
                     <a class="button is-light" onclick="newPosting()">
                         <strong>글쓰기</strong>
