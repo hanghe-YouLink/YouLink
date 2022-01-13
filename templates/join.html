@@ -17,7 +17,7 @@
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
 
-    <title> 회원가입 페이지 (ツ)_/¯ </title>
+    <title> SIGN_UP | YOULINK </title>
 
     <style>
         @font-face {
@@ -34,11 +34,6 @@
         .field {
             margin: auto;
             display: block;
-        }
-
-        .title {
-            font-weight: bold;
-            font-size: 48px;
         }
 
         .box {
@@ -58,7 +53,7 @@
 
     </style>
     <script>
-
+        // bulma는 클래스명이 직관적이어서 is- ~~ 라고 쓴다.
         // 회원가입 함수
         function sign_up() {
             let user_id = $('#join_id').val()
@@ -108,7 +103,7 @@
                     user_nick_give: user_nickName
                 },
                 success: function (response) {
-                    console.log(response)
+                    console.log(response) // 유저의 id pw nick를 가져와야한다.
                     alert('가입 축하드립니다.')
                     location.href = '/login'
                 }
@@ -116,6 +111,7 @@
 
         }
 
+        // 정규표현식
         //5~20글자 영어와 숫자만 가능 ID
         function is_id(asValue) {
             let regExp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{5,20}$/;
@@ -201,7 +197,10 @@
     </script>
 </head>
 <body>
+<!--전체-->
 <section class="section is-medium">
+
+<!--    로고-->
     <div class="logo">
         <a href="/" target="_blank"><img src="/static/logo.png"></a>
     </div>
@@ -219,6 +218,7 @@
                     <a class="button is-light" onclick="check_dup_ID()">중복확인</a>
                 </div>
             </div>
+<!--            아이디 밑 도움-->
             <p id="check_id" class="help">아이디는 5-20자의 영문과 숫자만 입력 가능합니다.</p>
         </div>
         <!--비밀번호 입력-->
@@ -227,6 +227,7 @@
             <div class="control">
                 <input class="input" type="password" id="join_pw" placeholder="" value="">
             </div>
+<!--            비밀번호 밑 도움-->
             <p id="check_pw" class="help">영문과 숫자 조합의 4-16자의 비밀번호를 설정해주세요. 특수문자(!@#$%^&*)도 사용 가능합니다.</p>
         </div>
         <!--비밀번호 확인-->
@@ -248,9 +249,10 @@
                     <a class="button is-light" onclick="check_dup_NICK()">중복확인</a>
                 </div>
             </div>
+<!--            닉네임 밑 도움-->
             <p id="check_nick" class="help">닉네임은 2-10자의 한글 영문 숫자만 입력 가능합니다.</p>
-
         </div>
+<!--        회원가입과  취소 버튼-->
         <div class="field is-grouped buttons">
             <div class="control">
                 <button class="button is-dark" onclick="sign_up()">회원가입</button>
