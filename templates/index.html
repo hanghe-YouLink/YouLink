@@ -4,6 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 
@@ -19,7 +20,7 @@
             crossorigin="anonymous"></script>
     <!-- 폰트 -->
     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
-    <title>MAIN | YOULINK</title>
+    <title>YouLink 메인 페이지</title>
     <style>
 
         @font-face {
@@ -72,10 +73,6 @@
             padding: 20px;
         }
 
-        .input_text {
-
-        }
-
         .search-btn {
             margin: 10px 10px 10px 10px;
         }
@@ -118,7 +115,6 @@
             background: linear-gradient(0deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
         }
 
-        {#코멘트 글자 수가 너무 많아도 밖으로 튀어나오지 않음#}
         .comment_limit {
             width: 300px;
             height: 300px;
@@ -146,7 +142,6 @@
             padding: 120px;
         }
 
-        .main-title h1,
         .subtitle {
             color: white;
         }
@@ -154,23 +149,14 @@
     </style>
 
     <script>
-        // 검사용 함수
-        function findingResult() {
 
-            location.href = "게시글 페이지"
-            $('#searching_word').text
-
-            // match()같은 함수를 이용해 위 텍스트와 게시글 제목이 겹치는 부분이 있을 경우
-            // 해당되는 게시글 모두 출력
-
-        }
 
         $(document).ready(function () {
-            postingArticles()
-            login_status()
+            postingArticles()  // 로딩과 동시에 등록된 게시글 불러오기
+            login_status()  // 로딩과 동시에 로그인 상태 확인하여 로그인/로그아웃 버튼 표시
         });
 
-        function postingArticles() {
+        function postingArticles() { // 등록된 게시글 불러오기
 
             $('#post-box').empty()
 
@@ -189,6 +175,7 @@
                         let image = postings[i]['image']
                         let comment = postings[i]['comment']
 
+                        // 게시글 템플릿
                         let temp_html = `<div class="card posting-card">
         <div class="card-image">
             <figure class="image is-4by3">
@@ -227,11 +214,9 @@
                 let login_btn = `<strong>로그인</strong>`
                 $('#login_btn').append(login_btn)
             }
-
-            // let cookie = (document.cookie.split("=")[1]) // 브라우저 내 token 값 추출, 혹은 $.cookie('mytoken')으로도 확인가능
         }
 
-        //로그인 상태, 버튼은 로그아웃 표출 시 -> 로그아웃 됨, 로그아웃 상태, 버튼은 로그인 표출 시 -> 로그인 됨
+        //로그인 상태, 버튼은 로그아웃 표출 시 버튼을 클릭할 때 -> 로그아웃 됨 | 로그아웃 상태, 버튼은 로그인 표출 시 버튼을 클릭할 때 -> 로그인 됨
         function login_out() {
 
             console.log(document.cookie.split("=").includes('mytoken'))
@@ -242,10 +227,10 @@
                 $.removeCookie('mytoken', {path: '/'});
                 alert('로그아웃!')
                 window.location.href = '/'
-                // 내가 가지고 있는 로그인 토큰만 쿠키에서 없애기
             }
         }
 
+        // 글쓰기로 이동
         function newPosting() {
 
             if (document.cookie.split("=").includes('mytoken')) {
@@ -260,7 +245,6 @@
 
 </head>
 <body>
-
 <!-- 네비게이션 바, 홈로고, 닉네임 표시, 로그인, 글쓰기 버튼 -->
     <div class="navi">
     <nav class="navbar" role="navigation" aria-label="main navigation">
@@ -273,10 +257,10 @@
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">
-                    <span class="user_id">{{ nickname }} 님</span> &nbsp;&nbsp;&nbsp;
+                    <span class="user_id">{{ nickname }} 님</span> &nbsp;&nbsp;&nbsp;<!--닉네임 표시-->
                     <a class="button is-dark" id="login_btn" onclick="login_out()" style="color: white"></a>
                     <a class="button is-light" onclick="newPosting()">
-                        <strong>글쓰기</strong>
+                        <strong>글쓰기</strong> <!--글쓰기 버튼-->
                     </a>
                 </div>
             </div>
@@ -286,7 +270,7 @@
     <div class="block main">
         <div class="columns">
             <div class="column is-two-thirds main-title">
-                <h1 class="title">안녕하세요, {{ nickname }}님! 유링크입니다!</h1>
+                <h1 class="title">안녕하세요, {{ nickname }}님! 유링크입니다!</h1> <!--메인 페이지 내 닉네임 표시하여 환영-->
                 <br>
                 <h2 class="subtitle" style="font-size: 18px">
                     내가 직접 만들어가는 유튜브링크 사이트!<br>
@@ -297,8 +281,7 @@
         </div>
     </div>
 
-<!-- 글 목록 넣는 부분, 아직 접기 기능 및 그라데이션은 미적용,모바일 환경 UI (네비게이션 바, 검색, 이미지 크기 반응형 필요)
-Css 전반적으로 모두 손보기-->
+<!--게시글이 temp_html라는 변수로 로딩 마다 DB에서 정보를 받아와 등록되는 곳-->
 <div class='post-box' id="post-box">
 
 </div>
