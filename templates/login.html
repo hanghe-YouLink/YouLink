@@ -89,7 +89,7 @@
                     if (response['result'] == 'success') {
                         $.cookie('mytoken', response['token'])
                         alert('로그인 완료!')
-                        location.href = '/'
+                        window.location.replace("/")
                     } else {
                         alert(response['msg'])
                     }
