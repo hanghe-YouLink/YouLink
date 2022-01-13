@@ -18,13 +18,20 @@ SECRET_KEY = 'YOULINK'
 # 메인페이지
 @app.route('/')
 def main():
-    return render_template("index.html")
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"user_ID": payload['user_ID']})
+        return render_template('index.html', nickname=user_info["user_NICK"])
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login"))
 
 
-# 로그인페이지
+# 로그인페이지 - 첫페이지
 @app.route('/login')
 def login():
-    return render_template("login.html")
+    msg = request.args.get("msg")
+    return render_template("login.html", msg = msg)
 
 
 # 회원가입페이지
