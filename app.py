@@ -18,14 +18,7 @@ SECRET_KEY = 'YOULINK'
 # 메인페이지
 @app.route('/')
 def main():
-    # 메인 페이지에 사용자 닉네임을 띄워주는 api
-    token_receive = request.cookies.get('mytoken')
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.users.find_one({"user_ID": payload['user_ID']})
-        return render_template('index.html', nickname=user_info["user_NICK"], msg='')
-    except jwt.exceptions.DecodeError:
-        return redirect("index-html", msg="로그인")
+    return render_template("index.html")
 
 
 # 로그인페이지
