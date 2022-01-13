@@ -1,6 +1,6 @@
-import hashlib
 
 import jwt
+import hashlib
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 
 app = Flask(__name__)
@@ -10,7 +10,8 @@ from bs4 import BeautifulSoup
 
 from pymongo import MongoClient
 
-client = MongoClient('localhost', 27017)
+client = MongoClient('mongodb://3.35.21.27/', 27017, username="test", password='test')
+# client = MongoClient('localhost', 27017)
 db = client.dbyoulink
 SECRET_KEY = 'YOULINK'
 
@@ -84,9 +85,10 @@ def api_membership2():
 # 회원가입 api
 @app.route('/api/sign_up', methods=['POST'])
 def sign_up():
+    # 사용자가 입력한 값을 가져온다.
     user_id_receive = request.form['user_id_give']
     user_pw_receive = request.form['user_pw_give']
-    password_hash = hashlib.sha256(user_pw_receive.encode('utf-8')).hexdigest()
+    password_hash = hashlib.sha256(user_pw_receive.encode('utf-8')).hexdigest() # 비밀번호 부분은 해쉬를 사용해서 암호화 한다.
     user_nick_receive = request.form['user_nick_give']
 
     doc = {
